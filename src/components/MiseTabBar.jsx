@@ -23,7 +23,7 @@ export default function MiseTabBar() {
   return (
     <div style={{
       position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 40,
-      padding: '10px 14px 28px',
+      padding: '10px 14px max(20px, env(safe-area-inset-bottom, 20px))',
       background: 'linear-gradient(180deg, rgba(250,250,248,0) 0%, rgba(250,250,248,0.96) 30%, #FAFAF8 100%)',
       borderTop: '0.5px solid rgba(10,10,9,0.06)',
       display: 'flex', justifyContent: 'space-around',

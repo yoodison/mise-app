@@ -1,16 +1,16 @@
 // MISE — Home (확장판)
 // 기존 홈 + 인기 토론 + 취향 추천 섹션
 
-import MiseStatus from '../components/MiseStatus.jsx';
+import { useNavigate } from 'react-router-dom';
 import MiseTabBar from '../components/MiseTabBar.jsx';
 import Poster from '../components/Poster.jsx';
 import StarRow from '../components/StarRow.jsx';
 import { MISE, FILMS } from '../tokens.js';
 
 export default function ScreenHome() {
+  const navigate = useNavigate();
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
-      <MiseStatus/>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
 
       {/* scrollable feed */}
       <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 100, scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -57,17 +57,15 @@ export default function ScreenHome() {
             { k: 'anatomy', avg: 4.4, exp: 4.6 },
             { k: 'past',    avg: 4.1, exp: 4.5 },
           ].map(({ k, avg, exp }) => (
-            <div key={k} style={{ flexShrink: 0, width: 110 }}>
+            <div key={k} style={{ flexShrink: 0, width: 110, cursor: 'pointer' }} onClick={() => navigate('/movie/' + k)}>
               <Poster {...FILMS[k]} w={110} h={155}/>
               <div style={{ fontFamily: MISE.fontSerif, fontSize: 14, color: MISE.ink, marginTop: 8, lineHeight: 1.2 }}>{FILMS[k].title}</div>
               <div style={{ fontSize: 10, color: MISE.ink45, marginTop: 2, letterSpacing: '0.02em' }}>{FILMS[k].director}</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 5 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 5, flexWrap: 'wrap' }}>
                 <StarRow value={avg} size={9}/>
                 <span style={{ fontSize: 10, color: MISE.ink55, fontWeight: 500 }}>{avg.toFixed(1)}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 3 }}>
+                <span style={{ fontSize: 9, color: MISE.ink18 }}>·</span>
                 <span style={{ fontSize: 9, color: MISE.gold, fontWeight: 700 }}>예상 {exp.toFixed(1)}</span>
-                <span style={{ fontSize: 8, color: MISE.ink35 }}>↑</span>
               </div>
             </div>
           ))}
@@ -139,9 +137,10 @@ function Section({ title, more }) {
 }
 
 function RecommendCard({ filmKey, reason, match }) {
+  const navigate = useNavigate();
   const f = FILMS[filmKey];
   return (
-    <div style={{ background: MISE.charcoal, borderRadius: 6, padding: 16, display: 'flex', gap: 14, position: 'relative', overflow: 'hidden' }}>
+    <div onClick={() => navigate('/movie/' + filmKey)} style={{ cursor: 'pointer', background: MISE.charcoal, borderRadius: 6, padding: 16, display: 'flex', gap: 14, position: 'relative', overflow: 'hidden' }}>
       <Poster {...f} w={86} h={122} radius={3}/>
       <div style={{ flex: 1, minWidth: 0, color: MISE.warm, display: 'flex', flexDirection: 'column' }}>
         <div style={{ fontSize: 9, letterSpacing: '0.16em', color: MISE.gold, textTransform: 'uppercase', fontWeight: 600, marginBottom: 6 }}>
@@ -154,7 +153,7 @@ function RecommendCard({ filmKey, reason, match }) {
           <span style={{ fontSize: 10, color: 'rgba(250,250,248,0.5)' }}>평균</span>
           <StarRow value={4.2} size={10} empty="rgba(250,250,248,0.15)"/>
           <span style={{ fontSize: 10, color: MISE.warm, fontWeight: 600 }}>4.2</span>
-          <span style={{ marginLeft: 'auto', fontSize: 10, color: MISE.gold }}>예상 4.6 ↑</span>
+          <span style={{ marginLeft: 'auto', fontSize: 10, color: MISE.gold }}>예상 4.6</span>
         </div>
       </div>
     </div>
@@ -162,9 +161,10 @@ function RecommendCard({ filmKey, reason, match }) {
 }
 
 function RecoRow({ filmKey, reason, match, avg, exp }) {
+  const navigate = useNavigate();
   const f = FILMS[filmKey];
   return (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div onClick={() => navigate('/movie/' + filmKey)} style={{ cursor: 'pointer', display: 'flex', gap: 12, alignItems: 'center' }}>
       <Poster {...f} w={52} h={74} radius={3}/>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontFamily: MISE.fontSerif, fontSize: 14, color: MISE.ink, marginBottom: 2, fontWeight: 500 }}>{f.title}</div>
@@ -176,7 +176,7 @@ function RecoRow({ filmKey, reason, match, avg, exp }) {
             <span style={{ fontSize: 9, color: MISE.ink55, fontWeight: 500 }}>{avg.toFixed(1)}</span>
           </div>
           <span style={{ fontSize: 8, color: MISE.ink18 }}>·</span>
-          <span style={{ fontSize: 9, color: MISE.gold, fontWeight: 700 }}>예상 {exp.toFixed(1)} ↑</span>
+          <span style={{ fontSize: 9, color: MISE.gold, fontWeight: 700 }}>예상 {exp.toFixed(1)}</span>
         </div>
       </div>
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -215,9 +215,10 @@ const DISCUSSIONS = [
 ];
 
 function DiscussionRow({ film, tag, title, excerpt, author, replies, likes, hot }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   return (
-    <div style={{ background: MISE.linen, borderRadius: 8, padding: 14, display: 'flex', gap: 12 }}>
+    <div onClick={() => navigate('/movie/' + film)} style={{ cursor: 'pointer', background: MISE.linen, borderRadius: 8, padding: 14, display: 'flex', gap: 12 }}>
       <Poster {...f} w={46} h={66} radius={3}/>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
@@ -239,10 +240,11 @@ function DiscussionRow({ film, tag, title, excerpt, author, replies, likes, hot 
 }
 
 function PotMini({ film, where, when, filled, total }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   const pct = filled / total * 100;
   return (
-    <div style={{ background: MISE.linen, borderRadius: 10, padding: 12, display: 'flex', gap: 12 }}>
+    <div onClick={() => navigate('/movie/' + film)} style={{ cursor: 'pointer', background: MISE.linen, borderRadius: 10, padding: 12, display: 'flex', gap: 12 }}>
       <Poster {...f} w={52} h={74} radius={3}/>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontFamily: MISE.fontSerif, fontSize: 14, color: MISE.ink, fontWeight: 500, marginBottom: 2 }}>{f.title}</div>

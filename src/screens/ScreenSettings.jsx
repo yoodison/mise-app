@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import MiseStatus from '../components/MiseStatus.jsx'
 import { MISE } from '../tokens.js'
 
 function When2Meet() {
@@ -84,8 +83,7 @@ function Toggle({ on }) {
 export default function ScreenSettings() {
   const navigate = useNavigate();
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
-      <MiseStatus/>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <div style={{ padding: '4px 20px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
         <svg onClick={() => navigate(-1)} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={MISE.ink} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: 'pointer' }}><path d="M15 6l-6 6 6 6"/></svg>
         <div style={{ fontFamily: MISE.fontSerif, fontSize: 22, color: MISE.ink, fontWeight: 500, letterSpacing: '0.01em' }}>설정</div>

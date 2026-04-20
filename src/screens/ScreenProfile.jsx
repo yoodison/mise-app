@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import MiseStatus from '../components/MiseStatus.jsx'
 import MiseTabBar from '../components/MiseTabBar.jsx'
 import Poster from '../components/Poster.jsx'
 import StarRow from '../components/StarRow.jsx'
@@ -11,7 +10,6 @@ function ProfileHeader({ activeTab, onTabChange }) {
   const navigate = useNavigate();
   return (
     <>
-      <MiseStatus/>
       <div style={{ padding: '4px 20px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg, #3A2A20, #2A2520)', flexShrink: 0, border: `1px solid ${MISE.ink10}` }}/>
         <div style={{ flex: 1 }}>
@@ -59,9 +57,10 @@ function ProfileHeader({ activeTab, onTabChange }) {
 }
 
 function WatchedTile({ film, stars, q, crits = [] }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   return (
-    <div style={{ position: 'relative', aspectRatio: '3/4', borderRadius: 4, overflow: 'hidden' }}>
+    <div onClick={() => navigate('/movie/' + film)} style={{ position: 'relative', aspectRatio: '3/4', borderRadius: 4, overflow: 'hidden', cursor: 'pointer' }}>
       <Poster {...f} title={undefined} year={undefined} director={undefined} w="100%" h="100%" radius={4}/>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 25%, rgba(0,0,0,0.92) 100%)' }}/>
       <div style={{
@@ -115,7 +114,7 @@ function ProfileWatched({ activeTab, onTabChange }) {
     { film: 'anatomy',   stars: 4.0, q: '진실은 편집된 소리 안에 있다.', crits: ['각본','연출','연기'] },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <ProfileHeader activeTab={activeTab} onTabChange={onTabChange}/>
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '14px 20px 6px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
@@ -168,7 +167,7 @@ function ProfileCurating({ activeTab, onTabChange }) {
     { title: '한국영화 2018-2024',          subtitle: '10년의 흐름 · 15편',        cover: 'burning',  films: ['burning','parasite','decision','minari','past'] },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <ProfileHeader activeTab={activeTab} onTabChange={onTabChange}/>
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '14px 20px 10px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
@@ -185,9 +184,10 @@ function ProfileCurating({ activeTab, onTabChange }) {
 }
 
 function WishTile({ film, avg, expected }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   return (
-    <div>
+    <div onClick={() => navigate('/movie/' + film)} style={{ cursor: 'pointer' }}>
       <div style={{ aspectRatio: '3/4', borderRadius: 3, overflow: 'hidden', marginBottom: 6, position: 'relative' }}>
         <Poster {...f} title={undefined} year={undefined} director={undefined} w="100%" h="100%" radius={3}/>
       </div>
@@ -213,7 +213,7 @@ function ProfileWishlist({ activeTab, onTabChange }) {
     { film: 'minari',   avg: 4.1, expected: 4.3 },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <ProfileHeader activeTab={activeTab} onTabChange={onTabChange}/>
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '14px 20px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -240,9 +240,10 @@ function ProfileWishlist({ activeTab, onTabChange }) {
 }
 
 function TheaterTile({ film, avg, exp, rank }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   return (
-    <div style={{ background: MISE.linen, borderRadius: 8, padding: 12, display: 'flex', gap: 10, alignItems: 'center' }}>
+    <div onClick={() => navigate('/movie/' + film)} style={{ background: MISE.linen, borderRadius: 8, padding: 12, display: 'flex', gap: 10, alignItems: 'center', cursor: 'pointer' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, width: 20, flexShrink: 0 }}>
         <span style={{ fontFamily: MISE.fontSerif, fontSize: 16, color: rank <= 2 ? MISE.gold : MISE.ink35, fontWeight: 500, lineHeight: 1 }}>{rank}</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={MISE.ink18} strokeWidth="2" strokeLinecap="round"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
@@ -258,7 +259,7 @@ function TheaterTile({ film, avg, exp, rank }) {
             <span style={{ fontSize: 10, color: MISE.ink, fontWeight: 600 }}>{avg.toFixed(1)}</span>
           </div>
           <div style={{ width: 1, height: 10, background: MISE.ink10 }}/>
-          <div style={{ fontSize: 9.5, color: MISE.gold, fontWeight: 700 }}>예상 {exp.toFixed(1)} ↑</div>
+          <div style={{ fontSize: 9.5, color: MISE.gold, fontWeight: 700 }}>예상 {exp.toFixed(1)}</div>
         </div>
       </div>
     </div>
@@ -275,7 +276,7 @@ function ProfileTheater({ activeTab, onTabChange }) {
     { film: 'moonlight', avg: 4.3, exp: 4.5 },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <ProfileHeader activeTab={activeTab} onTabChange={onTabChange}/>
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '14px 20px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -329,7 +330,7 @@ function ProfileTaste({ activeTab, onTabChange }) {
     { name: '이도현', handle: 'dohyun.film',  match: 86, common: 64, tags: ['체호프','유럽영화'], avatar: '#283A2A' },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <ProfileHeader activeTab={activeTab} onTabChange={onTabChange}/>
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
 

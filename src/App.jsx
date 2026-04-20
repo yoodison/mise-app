@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import MisePhone from './components/MisePhone.jsx';
+import { MISE } from './tokens.js';
 import ScreenHome from './screens/ScreenHome.jsx';
 import ScreenCommunity from './screens/ScreenCommunity.jsx';
 import ScreenMovieDetail from './screens/ScreenMovieDetail.jsx';
@@ -10,16 +10,8 @@ import ScreenSettings from './screens/ScreenSettings.jsx';
 
 export default function App() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      paddingTop: 40,
-      paddingBottom: 40,
-      background: '#EDE9E0',
-    }}>
-      <MisePhone>
+    <div style={{ minHeight: '100vh', background: '#EDE9E0', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '100%', maxWidth: 430, minHeight: '100vh', background: MISE.warm, position: 'relative' }}>
         <BrowserRouter>
           <Routes>
             <Route path="/"           element={<ScreenHome />} />
@@ -32,7 +24,7 @@ export default function App() {
             <Route path="*"           element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
-      </MisePhone>
+      </div>
     </div>
   );
 }

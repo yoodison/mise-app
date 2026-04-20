@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import MiseStatus from '../components/MiseStatus.jsx'
+import { useNavigate, useParams } from 'react-router-dom'
 import MiseTabBar from '../components/MiseTabBar.jsx'
 import Poster from '../components/Poster.jsx'
 import StarRow from '../components/StarRow.jsx'
@@ -11,17 +10,17 @@ import { MISE, FILMS } from '../tokens.js'
 export default function ScreenMovieDetail() {
   const [variant, setVariant] = useState('rate')
   const navigate = useNavigate()
-  const f = FILMS.drive;
+  const { id } = useParams();
+  const f = FILMS[id] ?? FILMS.drive;
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       {/* DARK HEADER with poster */}
       <div style={{
         background: `linear-gradient(180deg, ${f.accent} 0%, ${f.tone} 65%, ${MISE.charcoal} 105%)`,
-        padding: '0 20px', flexShrink: 0, position: 'relative', overflow: 'hidden',
+        padding: '0 20px', paddingTop: 'env(safe-area-inset-top, 0px)', flexShrink: 0, position: 'relative', overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.3, backgroundImage: 'repeating-linear-gradient(42deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px)' }}/>
-        <MiseStatus dark/>
-        <div style={{ padding: '10px 0 14px', display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+        <div style={{ padding: '14px 0 14px', display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(250,250,248,0.9)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" onClick={() => navigate(-1)} style={{ cursor: 'pointer' }}><path d="M15 6l-6 6 6 6"/></svg>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(250,250,248,0.9)" strokeWidth="1.6"><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg>
         </div>
@@ -35,7 +34,7 @@ export default function ScreenMovieDetail() {
             </div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 9, padding: '3px 8px', border: '0.5px solid rgba(250,250,248,0.25)', borderRadius: 12, color: 'rgba(250,250,248,0.75)' }}>드라마</span>
-              <span style={{ fontSize: 9, padding: '3px 8px', border: '0.5px solid rgba(250,250,248,0.25)', borderRadius: 12, color: 'rgba(250,250,248,0.75)' }}>179분</span>
+              <span style={{ fontSize: 9, padding: '3px 8px', border: '0.5px solid rgba(250,250,248,0.25)', borderRadius: 12, color: 'rgba(250,250,248,0.75)' }}>{f.runtime}분</span>
               <span style={{ fontSize: 9, padding: '3px 8px', border: '0.5px solid rgba(250,250,248,0.25)', borderRadius: 12, color: 'rgba(250,250,248,0.75)' }}>15+</span>
             </div>
           </div>

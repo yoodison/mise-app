@@ -1,6 +1,27 @@
 import { MISE } from '../tokens.js';
 
-export default function Poster({ tone = '#1E1B17', accent = '#2A2520', title, year, director, w, h, radius = 4, style = {} }) {
+export default function Poster({ tone = '#1E1B17', accent = '#2A2520', title, year, director, w, h, radius = 4, style = {}, image }) {
+  const wStr = typeof w === 'number' ? w + 'px' : w;
+  const hStr = typeof h === 'number' ? h + 'px' : h;
+
+  if (image) {
+    return (
+      <img
+        src={image}
+        alt={title || ''}
+        style={{
+          width: wStr,
+          height: hStr,
+          objectFit: 'cover',
+          borderRadius: radius,
+          display: 'block',
+          flexShrink: 0,
+          ...style,
+        }}
+      />
+    );
+  }
+
   return (
     <div style={{
       width: w, height: h, borderRadius: radius,

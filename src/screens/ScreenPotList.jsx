@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import MiseStatus from '../components/MiseStatus.jsx'
 import MiseTabBar from '../components/MiseTabBar.jsx'
 import Poster from '../components/Poster.jsx'
 import { MISE, FILMS } from '../tokens.js'
@@ -12,14 +11,10 @@ export default function ScreenPotList() {
     { film: 'portrait', where: '필름포럼 신사',     when: '5.25 (토) 15:00', filled: 5,  total: 18, tags: ['셀린시아마','프랑스'],  host: '윤서영', distance: '8.2km' },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
-      <MiseStatus/>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <div style={{ padding: '4px 20px 16px' }}>
         <div style={{ fontSize: 10, letterSpacing: '0.18em', color: MISE.ink45, textTransform: 'uppercase', marginBottom: 3 }}>Together</div>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-          <div style={{ fontFamily: MISE.fontSerif, fontSize: 28, color: MISE.ink, letterSpacing: '0.01em', fontWeight: 500 }}>팟 모집 중</div>
-          <div style={{ fontSize: 11, color: MISE.gold, fontWeight: 500 }}>+ 새 팟 만들기</div>
-        </div>
+        <div style={{ fontFamily: MISE.fontSerif, fontSize: 28, color: MISE.ink, letterSpacing: '0.01em', fontWeight: 500 }}>팟 모집 중</div>
       </div>
 
       <div style={{ padding: '0 20px 14px', display: 'flex', gap: 6, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', flexShrink: 0 }}>
@@ -57,7 +52,7 @@ function PotCard({ film, where, when, filled, total, tags, host, distance, hot }
           🔥 HOT
         </div>
       )}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+      <div onClick={() => navigate('/movie/' + film)} style={{ display: 'flex', gap: 12, marginBottom: 12, cursor: 'pointer' }}>
         <Poster {...f} w={62} h={88} radius={3}/>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontFamily: MISE.fontSerif, fontSize: 16, color: MISE.ink, fontWeight: 500, lineHeight: 1.2, marginBottom: 3 }}>{f.title}</div>
@@ -89,7 +84,7 @@ function PotCard({ film, where, when, filled, total, tags, host, distance, hot }
           <span style={{ color: urgent ? '#C44A3A' : MISE.gold, fontWeight: 700 }}>{filled}</span>
           <span> / {total}명</span>
         </span>
-        <div onClick={() => navigate('/pot/jeanne')} style={{
+        <div onClick={(e) => { e.stopPropagation(); navigate('/pot/jeanne'); }} style={{
           padding: '9px 18px',
           background: MISE.gold,
           borderRadius: 6,

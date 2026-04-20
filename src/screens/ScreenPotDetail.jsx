@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import MiseStatus from '../components/MiseStatus.jsx'
 import MiseTabBar from '../components/MiseTabBar.jsx'
 import Poster from '../components/Poster.jsx'
 import StarRow from '../components/StarRow.jsx'
@@ -9,8 +8,7 @@ export default function ScreenPotDetail() {
   const navigate = useNavigate()
   const f = FILMS.jeanne;
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
-      <MiseStatus/>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <div style={{ padding: '4px 20px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={MISE.ink} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" onClick={() => navigate(-1)} style={{ cursor: 'pointer' }}><path d="M15 6l-6 6 6 6"/></svg>
         <span style={{ fontSize: 13, fontWeight: 600, color: MISE.ink }}>팟 상세</span>
@@ -21,11 +19,12 @@ export default function ScreenPotDetail() {
         {/* MOVIE LINK CARD */}
         <div style={{ margin: '0 20px 14px' }}>
           <div style={{ fontSize: 9, letterSpacing: '0.14em', color: MISE.ink45, textTransform: 'uppercase', marginBottom: 8, fontWeight: 500 }}>관람 영화</div>
-          <div style={{
+          <div onClick={() => navigate('/movie/jeanne')} style={{
             background: `linear-gradient(135deg, #3A2810 0%, #5A3A18 60%, #7A5020 100%)`,
             borderRadius: 8, padding: 14, display: 'flex', gap: 12,
             position: 'relative', overflow: 'hidden',
             border: `1px solid rgba(196,145,58,0.3)`,
+            cursor: 'pointer',
           }}>
             <Poster {...f} w={68} h={96} radius={3}/>
             <div style={{ flex: 1, minWidth: 0, color: MISE.warm, display: 'flex', flexDirection: 'column' }}>

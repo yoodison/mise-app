@@ -1,19 +1,18 @@
 // MISE — 커뮤니티 화면
 // tab = 'all' | 'essay' | 'discuss' | 'review' | 'qna'
 
-import MiseStatus from '../components/MiseStatus.jsx';
 import MiseTabBar from '../components/MiseTabBar.jsx';
 import Poster from '../components/Poster.jsx';
 import StarRow from '../components/StarRow.jsx';
 import { MISE, FILMS } from '../tokens.js';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ScreenCommunity() {
   const [tab, setTab] = useState('all');
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
-      <MiseStatus/>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
       <div style={{ padding: '4px 20px 12px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 10, letterSpacing: '0.18em', color: MISE.ink45, textTransform: 'uppercase', marginBottom: 3 }}>Community</div>
@@ -94,6 +93,7 @@ const ESSAYS = [
 ];
 
 function TabCommEssay() {
+  const navigate = useNavigate();
   return (
     <div style={{ padding: '0 20px 20px' }}>
       <div style={{ display: 'flex', gap: 5, marginBottom: 16, overflow: 'hidden' }}>
@@ -113,7 +113,11 @@ function TabCommEssay() {
             <div style={{ fontFamily: MISE.fontSerif, fontSize: 15, color: MISE.ink, fontWeight: 500, lineHeight: 1.3, marginBottom: 6 }}>{e.title}</div>
             <div style={{ fontSize: 11.5, color: MISE.ink55, lineHeight: 1.6, marginBottom: 8 }}>{e.excerpt}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              {e.films.map(fk => <Poster key={fk} {...FILMS[fk]} title={undefined} year={undefined} director={undefined} w={28} h={40} radius={2}/>)}
+              {e.films.map(fk => (
+                <div key={fk} onClick={() => navigate('/movie/' + fk)} style={{ cursor: 'pointer' }}>
+                  <Poster {...FILMS[fk]} title={undefined} year={undefined} director={undefined} w={28} h={40} radius={2}/>
+                </div>
+              ))}
             </div>
             <div style={{ display: 'flex', gap: 12, fontSize: 10, color: MISE.ink45 }}>
               <span>♡ {e.likes}</span>
@@ -220,6 +224,7 @@ function TabCommQna() {
 }
 
 function EssayHero() {
+  const navigate = useNavigate();
   const e = ESSAYS[0];
   return (
     <div style={{ background: MISE.charcoal, borderRadius: 8, overflow: 'hidden' }}>
@@ -242,17 +247,24 @@ function EssayHero() {
       </div>
       <div style={{ borderTop: '0.5px solid rgba(250,250,248,0.08)', padding: '10px 18px', display: 'flex', gap: 8, alignItems: 'center' }}>
         <span style={{ fontSize: 9, color: 'rgba(250,250,248,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', marginRight: 4 }}>관련</span>
-        {e.films.map(fk => <Poster key={fk} {...FILMS[fk]} title={undefined} year={undefined} director={undefined} w={32} h={44} radius={2}/>)}
+        {e.films.map(fk => (
+          <div key={fk} onClick={() => navigate('/movie/' + fk)} style={{ cursor: 'pointer' }}>
+            <Poster {...FILMS[fk]} title={undefined} year={undefined} director={undefined} w={32} h={44} radius={2}/>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
 function CommDiscRow({ film, tag, hot, title, author, when, replies, likes }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   return (
     <div style={{ background: MISE.linen, borderRadius: 8, padding: 12, display: 'flex', gap: 10 }}>
-      <Poster {...f} title={undefined} year={undefined} director={undefined} w={42} h={60} radius={3}/>
+      <div onClick={() => navigate('/movie/' + film)} style={{ cursor: 'pointer' }}>
+        <Poster {...f} title={undefined} year={undefined} director={undefined} w={42} h={60} radius={3}/>
+      </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
           <span style={{ fontSize: 9, padding: '2px 6px', background: hot ? MISE.gold : MISE.ink10, color: hot ? MISE.warm : MISE.ink70, borderRadius: 8, fontWeight: 600 }}>
@@ -272,6 +284,7 @@ function CommDiscRow({ film, tag, hot, title, author, when, replies, likes }) {
 }
 
 function CommReviewRow({ film, stars, author, handle, when, text, likes, replies }) {
+  const navigate = useNavigate();
   const f = FILMS[film];
   const avatarColors = { '박재현':'#2A2520','윤서영':'#3A2830','이도현':'#2A3830','김서우':'#283A2A','이민준':'#2A283A' };
   return (
@@ -289,7 +302,9 @@ function CommReviewRow({ film, stars, author, handle, when, text, likes, replies
             <span style={{ fontSize: 9, color: MISE.ink35 }}>· {f.title}</span>
           </div>
         </div>
-        <Poster {...f} title={undefined} year={undefined} director={undefined} w={36} h={50} radius={2.5}/>
+        <div onClick={() => navigate('/movie/' + film)} style={{ cursor: 'pointer' }}>
+          <Poster {...f} title={undefined} year={undefined} director={undefined} w={36} h={50} radius={2.5}/>
+        </div>
       </div>
       <div style={{ fontSize: 12, color: MISE.ink70, lineHeight: 1.6, marginBottom: 8 }}>{text}</div>
       <div style={{ fontSize: 10, color: MISE.ink45, display: 'flex', gap: 12 }}>
