@@ -9,6 +9,7 @@ import { MISE, FILMS } from '../tokens.js'
 
 export default function ScreenMovieDetail() {
   const [variant, setVariant] = useState('rate')
+  const [myRating, setMyRating] = useState(0)
   const navigate = useNavigate()
   const { id } = useParams();
   const f = FILMS[id] ?? FILMS.drive;
@@ -44,26 +45,31 @@ export default function ScreenMovieDetail() {
       {/* WHITE CONTENT */}
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '20px 20px 16px' }}>
-          <div style={{ display: 'flex', gap: 0, marginBottom: 14 }}>
+          <div style={{ display: 'flex', gap: 0, marginBottom: 16 }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: MISE.ink45, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>종합 별점</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 3 }}>
-                <span style={{ fontFamily: MISE.fontSerif, fontSize: 30, color: MISE.ink, lineHeight: 1, fontWeight: 500 }}>4.3</span>
-                <StarRow value={4.3} size={11}/>
+              <div style={{ fontSize: 9, color: MISE.ink45, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>종합 별점</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 20, color: MISE.gold, lineHeight: 1 }}>★</span>
+                <span style={{ fontFamily: MISE.fontSerif, fontSize: 28, color: MISE.ink, lineHeight: 1, fontWeight: 500 }}>4.3</span>
               </div>
-              <div style={{ fontSize: 10, color: MISE.ink45 }}>2,184명 평가</div>
+              <div style={{ fontSize: 10, color: MISE.ink45, marginTop: 4 }}>2,184명 평가</div>
             </div>
             <div style={{ width: '0.5px', background: MISE.ink10, margin: '4px 16px' }}/>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: MISE.gold, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4, fontWeight: 600 }}>당신의 예상</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 3 }}>
-                <span style={{ fontFamily: MISE.fontSerif, fontSize: 30, color: MISE.gold, lineHeight: 1, fontWeight: 500 }}>4.6</span>
-                <StarRow value={4.6} size={10}/>
+              <div style={{ fontSize: 9, color: MISE.gold, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6, fontWeight: 600 }}>당신의 예상</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 20, color: MISE.gold, lineHeight: 1 }}>★</span>
+                <span style={{ fontFamily: MISE.fontSerif, fontSize: 28, color: MISE.gold, lineHeight: 1, fontWeight: 500 }}>4.6</span>
               </div>
-              <div style={{ fontSize: 9, color: MISE.ink45 }}>취향 유사도 기반</div>
             </div>
           </div>
-
+          <div style={{ marginBottom: 16, paddingBottom: 16, borderBottom: `0.5px solid ${MISE.ink06}` }}>
+            <div style={{ fontSize: 10, color: MISE.ink55, fontWeight: 500, marginBottom: 10 }}>내 평점</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <SwipeStars value={myRating} onChange={setMyRating} size={28}/>
+              {myRating > 0 && <span style={{ fontFamily: MISE.fontSerif, fontSize: 24, color: MISE.gold, fontWeight: 600, lineHeight: 1 }}>{myRating.toFixed(1)}</span>}
+            </div>
+          </div>
           <CritSection/>
         </div>
 
@@ -89,7 +95,7 @@ export default function ScreenMovieDetail() {
           ))}
         </div>
 
-        {variant === 'rate' && <TabRate/>}
+        {variant === 'rate' && <TabRate myRating={myRating} setMyRating={setMyRating}/>}
         {variant === 'reviews' && <TabReviews/>}
         {variant === 'discuss' && <TabDiscuss/>}
       </div>
@@ -140,7 +146,7 @@ function CritSection() {
         fontSize: 10.5, color: MISE.gold, fontWeight: 600, cursor: 'pointer',
         padding: '6px 0',
       }}>
-        <span>{open ? '세부 평가 접기' : '세부 평가 항목 모두 보기'}</span>
+        <span>{open ? '세부 평가 접기' : '세부 평가'}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={MISE.gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           {open ? <path d="M18 15l-6-6-6 6"/> : <path d="M6 9l6 6 6-6"/>}
         </svg>
@@ -168,45 +174,34 @@ function CritSection() {
   );
 }
 
-function TabRate() {
-  const [overall, setOverall] = useState(4.2);
-  const crits = [
-    { name: '연출',   val: 4.5 },
-    { name: '각본',   val: 4.2 },
-    { name: '연기',   val: 4.3 },
-  ];
+function TabRate({ myRating, setMyRating }) {
   return (
-    <div style={{ padding: '18px 20px 30px' }}>
-      <div style={{ marginBottom: 22 }}>
-        <div style={{ marginBottom: 14 }}>
-          <span style={{ fontSize: 11, color: MISE.ink55, fontWeight: 500 }}>내 평점</span>
+    <div style={{ padding: '16px 20px 30px' }}>
+      <div style={{ display: 'flex', marginBottom: 20, padding: '12px 14px', background: MISE.linen, borderRadius: 8 }}>
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{ fontSize: 9, color: MISE.ink45, marginBottom: 8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>내 평점</div>
+          <SwipeStars value={myRating} onChange={setMyRating} size={20}/>
+          <div style={{ fontFamily: MISE.fontSerif, fontSize: 20, color: myRating > 0 ? MISE.gold : MISE.ink18, marginTop: 6, fontWeight: 500 }}>
+            {myRating > 0 ? myRating.toFixed(1) : '—'}
+          </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, justifyContent: 'center' }}>
-          <SwipeStars value={overall} onChange={setOverall} size={40}/>
-          <span style={{ fontFamily: MISE.fontSerif, fontSize: 30, color: MISE.gold, fontWeight: 600, minWidth: 36 }}>{overall.toFixed(1)}</span>
-        </div>
-      </div>
-
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, color: MISE.ink55, fontWeight: 500, marginBottom: 12 }}>세부 항목</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {crits.map(c => (
-            <div key={c.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 11, color: MISE.ink70, width: 52, flexShrink: 0 }}>{c.name}</span>
-              <SwipeStars value={c.val} size={18}/>
-              <span style={{ fontSize: 11, color: MISE.ink, fontWeight: 600, minWidth: 24, textAlign: 'right' }}>{c.val.toFixed(1)}</span>
-            </div>
-          ))}
+        <div style={{ width: '0.5px', background: MISE.ink10, margin: '4px 12px' }}/>
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{ fontSize: 9, color: MISE.ink45, marginBottom: 8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>유저 평균</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, justifyContent: 'center', marginTop: 2 }}>
+            <span style={{ fontSize: 16, color: MISE.gold, lineHeight: 1 }}>★</span>
+            <span style={{ fontFamily: MISE.fontSerif, fontSize: 20, color: MISE.ink, fontWeight: 500 }}>4.3</span>
+          </div>
+          <div style={{ fontSize: 10, color: MISE.ink45, marginTop: 6 }}>2,184명 평가</div>
         </div>
       </div>
 
-      <div>
+      <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 11, color: MISE.ink55, fontWeight: 500, marginBottom: 8 }}>감상평</div>
         <div style={{
           border: `0.5px solid ${MISE.ink18}`, borderRadius: 6, padding: 12,
-          background: MISE.warm, minHeight: 96,
+          background: MISE.warm, minHeight: 80,
           fontSize: 12, color: MISE.ink70, lineHeight: 1.6,
-          fontFamily: MISE.fontSans,
         }}>
           <span style={{ color: MISE.ink35 }}>이 영화에서 가장 인상 깊었던 장면, 한 컷, 한 대사를 적어주세요...</span>
         </div>
@@ -221,15 +216,15 @@ function TabRate() {
         </div>
       </div>
 
-      <div style={{ marginTop: 20, paddingTop: 18, borderTop: `0.5px solid ${MISE.ink06}` }}>
+      <div style={{ paddingTop: 14, borderTop: `0.5px solid ${MISE.ink06}` }}>
         <div style={{ fontSize: 11, color: MISE.ink55, fontWeight: 500, marginBottom: 10 }}>내가 남긴 감상평</div>
         <div style={{ background: MISE.linen, borderRadius: 8, padding: 14 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <div style={{ width: 24, height: 24, borderRadius: '50%', background: '#3A2A20' }}/>
             <span style={{ fontSize: 11, fontWeight: 600, color: MISE.ink }}>김지수</span>
             <span style={{ fontSize: 9, color: MISE.ink35 }}>3일 전</span>
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 3 }}>
-              <StarRow value={4.2} size={9}/>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontSize: 14, color: MISE.gold }}>★</span>
               <span style={{ fontSize: 10, color: MISE.ink, fontWeight: 700 }}>4.2</span>
             </div>
           </div>

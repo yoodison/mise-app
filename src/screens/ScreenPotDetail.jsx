@@ -5,7 +5,7 @@ import StarRow from '../components/StarRow.jsx'
 import { MISE, FILMS } from '../tokens.js'
 
 const SCHEDULES = [
-  { id: 1, date: '5.18 (토)', time: '14:00', where: 'CGV 홍대 2관',   distance: '2.4km', filled: 17, total: 20 },
+  { id: 1, date: '5.18 (토)', time: '14:00', where: 'CGV 홍대 2관',   distance: '2.4km', filled: 22, total: 20 },
   { id: 2, date: '5.24 (금)', time: '20:00', where: '씨네큐브 광화문', distance: '5.1km', filled: 8,  total: 15 },
   { id: 3, date: '6.1 (일)',  time: '15:00', where: '아트나인 이수',   distance: '3.7km', filled: 3,  total: 18 },
 ];
@@ -68,14 +68,20 @@ export default function ScreenPotDetail() {
 
 function ScheduleCard({ date, time, where, distance, filled, total }) {
   const pct = Math.round(filled / total * 100);
-  const urgent = total - filled <= 3;
+  const isOver = pct >= 100;
+  const urgent = !isOver && total - filled <= 3;
+  const remaining = Math.max(0, total - filled);
+
+  const barColor = isOver ? '#2A7A50' : urgent ? '#C44A3A' : MISE.gold;
+  const ctaColor = isOver ? '#2A7A50' : urgent ? '#C44A3A' : MISE.charcoal;
+
   return (
     <div style={{ background: MISE.linen, borderRadius: 10, padding: 14 }}>
-      {/* Time + Theater row */}
+      {/* Date + Theater row */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
         <div>
-          <div style={{ fontFamily: MISE.fontSerif, fontSize: 22, color: MISE.ink, fontWeight: 500, lineHeight: 1, marginBottom: 3 }}>{time}</div>
-          <div style={{ fontSize: 11, color: MISE.ink45 }}>{date}</div>
+          <div style={{ fontSize: 17, color: MISE.ink, fontWeight: 700, lineHeight: 1.2, marginBottom: 3 }}>{date}</div>
+          <div style={{ fontSize: 13, color: MISE.ink, fontWeight: 600 }}>{time}</div>
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 12, color: MISE.ink, fontWeight: 600, marginBottom: 2 }}>{where}</div>
@@ -83,29 +89,40 @@ function ScheduleCard({ date, time, where, distance, filled, total }) {
         </div>
       </div>
 
-      {/* Wadiz-style progress */}
+      {/* Progress bar */}
       <div style={{ marginBottom: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
           <span style={{ fontSize: 9.5, color: MISE.ink45, letterSpacing: '0.08em' }}>신청 현황</span>
-          <span style={{ fontSize: 12, color: MISE.gold, fontWeight: 700 }}>{pct}%</span>
+          <span style={{ fontSize: 12, color: barColor, fontWeight: 700 }}>
+            {isOver ? '초과 달성' : `${pct}%`}
+          </span>
         </div>
         <div style={{ height: 5, background: MISE.ink10, borderRadius: 2.5, overflow: 'hidden', marginBottom: 5 }}>
-          <div style={{ height: '100%', width: `${pct}%`, background: urgent ? '#C44A3A' : MISE.gold, borderRadius: 2.5 }} />
+          <div style={{ height: '100%', width: `${Math.min(pct, 100)}%`, background: barColor, borderRadius: 2.5 }} />
         </div>
         <div style={{ fontSize: 9.5, color: MISE.ink45 }}>
-          <span style={{ color: urgent ? '#C44A3A' : MISE.ink, fontWeight: 600 }}>{filled}명 신청</span>
-          {' '}/ 목표 {total}명
+          {isOver ? (
+            <>
+              <span style={{ color: '#2A7A50', fontWeight: 600 }}>잔여 0석</span>
+              {' '}· 전체 {total}명
+            </>
+          ) : (
+            <>
+              <span style={{ color: urgent ? '#C44A3A' : MISE.ink, fontWeight: 600 }}>잔여 {remaining}석</span>
+              {' '}· 전체 {total}명
+            </>
+          )}
         </div>
       </div>
 
       {/* CTA button */}
       <div style={{
-        background: urgent ? '#C44A3A' : MISE.charcoal,
+        background: ctaColor,
         borderRadius: 7, padding: '11px 0',
         textAlign: 'center', cursor: 'pointer',
       }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, color: MISE.warm, letterSpacing: '0.06em' }}>
-          {urgent ? '⚡ 신청하기' : '신청하기'}
+          {isOver ? '대기 신청하기' : urgent ? '⚡ 신청하기' : '신청하기'}
         </span>
       </div>
     </div>
