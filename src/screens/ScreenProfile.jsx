@@ -367,7 +367,7 @@ function ProfileTaste({ activeTab, onTabChange }) {
         <div style={{ marginBottom: 10 }}>
           <div style={{ padding: '0 20px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 12 }}>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: MISE.ink }}>비슷한 취향의 시네필</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: MISE.ink }}>비슷한 취향의 사용자</div>
               <div style={{ fontSize: 10, color: MISE.ink45, marginTop: 2 }}>매치율 85% 이상 · 12명</div>
             </div>
             <span style={{ fontSize: 10.5, color: MISE.gold, fontWeight: 600 }}>전체 보기</span>

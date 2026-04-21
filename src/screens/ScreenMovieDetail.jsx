@@ -44,31 +44,27 @@ export default function ScreenMovieDetail() {
       {/* WHITE CONTENT */}
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', paddingBottom: 100 }}>
         <div style={{ padding: '20px 20px 16px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 18, marginBottom: 12 }}>
-            <div>
-              <div style={{ fontSize: 9, color: MISE.ink45, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 2 }}>종합 별점</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontFamily: MISE.fontSerif, fontSize: 32, color: MISE.ink, lineHeight: 1, fontWeight: 500 }}>4.3</span>
+          <div style={{ display: 'flex', gap: 0, marginBottom: 14 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 9, color: MISE.ink45, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>종합 별점</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 3 }}>
+                <span style={{ fontFamily: MISE.fontSerif, fontSize: 30, color: MISE.ink, lineHeight: 1, fontWeight: 500 }}>4.3</span>
                 <StarRow value={4.3} size={11}/>
               </div>
-              <div style={{ fontSize: 10, color: MISE.ink45, marginTop: 3 }}>· 2,184명 평가</div>
+              <div style={{ fontSize: 10, color: MISE.ink45 }}>2,184명 평가</div>
             </div>
-            <div style={{ marginLeft: 'auto', textAlign: 'right', borderLeft: `0.5px solid ${MISE.ink10}`, paddingLeft: 14 }}>
-              <div style={{ fontSize: 9, color: MISE.gold, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 2, fontWeight: 600 }}>당신의 예상</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, justifyContent: 'flex-end' }}>
-                <span style={{ fontFamily: MISE.fontSerif, fontSize: 26, color: MISE.gold, lineHeight: 1, fontWeight: 500 }}>4.6</span>
-                <StarRow value={4.6} size={9}/>
+            <div style={{ width: '0.5px', background: MISE.ink10, margin: '4px 16px' }}/>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 9, color: MISE.gold, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4, fontWeight: 600 }}>당신의 예상</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 3 }}>
+                <span style={{ fontFamily: MISE.fontSerif, fontSize: 30, color: MISE.gold, lineHeight: 1, fontWeight: 500 }}>4.6</span>
+                <StarRow value={4.6} size={10}/>
               </div>
-              <div style={{ fontSize: 9, color: MISE.ink45, marginTop: 3 }}>취향 유사도 기반</div>
+              <div style={{ fontSize: 9, color: MISE.ink45 }}>취향 유사도 기반</div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 14 }}>
-            <CritTag name="연출" score={4.7}/>
-            <CritTag name="사운드" score={4.5}/>
-            <CritTag name="각본" score={4.4}/>
-            <span style={{ fontSize: 10, color: MISE.ink45, alignSelf: 'center' }}>+7개 더</span>
-          </div>
+          <CritSection/>
         </div>
 
         <div style={{ padding: '0 20px 16px', display: 'flex', gap: 8 }}>
@@ -114,6 +110,61 @@ function CritTag({ name, score }) {
       {name}
       <span style={{ color: MISE.gold, fontWeight: 700 }}>{score.toFixed(1)}</span>
     </span>
+  );
+}
+
+const ALL_CRITS = [
+  { name: '연출',          score: 4.7, desc: '연출력·장면 구성·연출 스타일' },
+  { name: '영상미',        score: 4.6, desc: '미장센·촬영·색감' },
+  { name: '몰입감',        score: 4.5, desc: '집중도·긴장감·체감 경험' },
+  { name: '스토리',        score: 4.4, desc: '전개·서사·플롯' },
+  { name: '음악',          score: 4.3, desc: '음악·사운드트랙' },
+  { name: '연기',          score: 4.2, desc: '배우 연기·캐릭터 표현' },
+  { name: '감정선/여운',   score: 4.1, desc: '감동·울림·여운' },
+  { name: '캐릭터',        score: 4.0, desc: '캐릭터 매력·입체감' },
+  { name: '메시지/주제성', score: 3.9, desc: '의미·주제·사회적 메시지' },
+  { name: '완성도',        score: 3.8, desc: '짜임새·밸런스·흐름 자연스러움' },
+];
+
+function CritSection() {
+  const [open, setOpen] = useState(false);
+  const [ratings, setRatings] = useState({});
+  const top3 = ALL_CRITS.slice(0, 3);
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+        {top3.map(c => <CritTag key={c.name} name={c.name} score={c.score}/>)}
+      </div>
+      <div onClick={() => setOpen(o => !o)} style={{
+        display: 'flex', alignItems: 'center', gap: 5,
+        fontSize: 10.5, color: MISE.gold, fontWeight: 600, cursor: 'pointer',
+        padding: '6px 0',
+      }}>
+        <span>{open ? '세부 평가 접기' : '세부 평가 항목 모두 보기'}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={MISE.gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          {open ? <path d="M18 15l-6-6-6 6"/> : <path d="M6 9l6 6 6-6"/>}
+        </svg>
+      </div>
+      {open && (
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 10, borderTop: `0.5px solid ${MISE.ink06}` }}>
+          {ALL_CRITS.map(c => {
+            const val = ratings[c.name] ?? 0;
+            return (
+              <div key={c.name}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <div>
+                    <span style={{ fontSize: 12, color: MISE.ink, fontWeight: 600 }}>{c.name}</span>
+                    <span style={{ fontSize: 10, color: MISE.ink45, marginLeft: 6 }}>{c.desc}</span>
+                  </div>
+                  {val > 0 && <span style={{ fontSize: 11, color: MISE.gold, fontWeight: 700 }}>{val.toFixed(1)}</span>}
+                </div>
+                <SwipeStars value={val} onChange={v => setRatings(r => ({ ...r, [c.name]: v }))} size={22}/>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
