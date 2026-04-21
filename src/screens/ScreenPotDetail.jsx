@@ -120,7 +120,7 @@ function ScheduleCard({ date, time, where, distance, filled, total, theaterTotal
         textAlign: 'center', cursor: 'pointer',
       }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, color: MISE.warm, letterSpacing: '0.06em' }}>
-          {isOver ? '대기 신청하기' : urgent ? '⚡ 신청하기' : '신청하기'}
+          {isOver && (theaterRemaining ?? 0) <= 0 ? '대기 신청하기' : urgent ? '⚡ 신청하기' : '신청하기'}
         </span>
       </div>
     </div>
