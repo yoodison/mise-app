@@ -268,12 +268,11 @@ function TheaterTile({ film, avg, exp, rank }) {
 
 function ProfileTheater({ activeTab, onTabChange }) {
   const items = [
-    { film: 'killers',   avg: 4.3, exp: 4.7 },
-    { film: 'roma',      avg: 4.2, exp: 4.4 },
-    { film: 'eo',        avg: 4.1, exp: 4.5 },
-    { film: 'cold',      avg: 4.2, exp: 4.5 },
-    { film: 'burning',   avg: 4.2, exp: 4.5 },
-    { film: 'moonlight', avg: 4.3, exp: 4.5 },
+    { film: 'killers',  avg: 4.3, exp: 4.7 },
+    { film: 'roma',     avg: 4.2, exp: 4.4 },
+    { film: 'eo',       avg: 4.1, exp: 4.5 },
+    { film: 'cold',     avg: 4.2, exp: 4.5 },
+    { film: 'burning',  avg: 4.2, exp: 4.5 },
   ];
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: MISE.warm, position: 'relative' }}>
@@ -289,8 +288,9 @@ function ProfileTheater({ activeTab, onTabChange }) {
         <div style={{ padding: '4px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           {items.map((it, i) => <TheaterTile key={it.film} rank={i + 1} {...it}/>)}
         </div>
-        <div style={{ padding: '16px 20px', fontSize: 10, color: MISE.ink35, textAlign: 'center' }}>
-          ≡ 핸들을 드래그해서 순서를 변경할 수 있어요
+        <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 10, color: MISE.ink35 }}>
+          <span>≡ 핸들을 드래그해서 순서를 변경할 수 있어요</span>
+          <span style={{ color: MISE.gold, fontWeight: 600, cursor: 'pointer' }}>슬롯 추가</span>
         </div>
       </div>
       <MiseTabBar/>

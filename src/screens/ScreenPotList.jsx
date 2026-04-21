@@ -106,7 +106,10 @@ function FilmPotCard({ film, avg, exp, hot, dates }) {
   const navigate = useNavigate();
   const f = FILMS[film];
   return (
-    <div style={{ background: MISE.linen, borderRadius: 10, padding: 14, position: 'relative', overflow: 'hidden' }}>
+    <div
+      onClick={() => navigate('/pot/' + film)}
+      style={{ background: MISE.linen, borderRadius: 10, padding: 14, position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
+    >
       {hot && (
         <div style={{
           position: 'absolute', top: 0, right: 0,
@@ -120,33 +123,32 @@ function FilmPotCard({ film, avg, exp, hot, dates }) {
 
       {/* Film info row */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
-        <Poster {...f} w={62} h={88} radius={3}/>
+        <div onClick={(e) => { e.stopPropagation(); navigate('/movie/' + film); }} style={{ cursor: 'pointer', flexShrink: 0 }}>
+          <Poster {...f} w={62} h={88} radius={3}/>
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontFamily: MISE.fontSerif, fontSize: 16, color: MISE.ink, fontWeight: 500, lineHeight: 1.2, marginBottom: 3 }}>{f.title}</div>
           <div style={{ fontSize: 10, color: MISE.ink45, marginBottom: 8 }}>{f.director} · {f.year} · {f.runtime}분</div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
             <StarRow value={avg} size={9}/>
             <span style={{ fontSize: 11, color: MISE.ink, fontWeight: 600 }}>{avg.toFixed(1)}</span>
-            <span style={{ fontSize: 10, color: MISE.ink35 }}>·</span>
-            <span style={{ fontSize: 11, color: MISE.gold, fontWeight: 700 }}>{exp.toFixed(1)}</span>
-            <span style={{ fontSize: 9, color: MISE.ink45 }}>예상</span>
+            <span style={{ fontSize: 10, color: MISE.ink18 }}>·</span>
+            <span style={{ fontSize: 11, color: MISE.gold, fontWeight: 700 }}>★ {exp.toFixed(1)}</span>
+            <span style={{ fontSize: 9, color: MISE.gold }}>예상</span>
+          </div>
+          <div
+            onClick={(e) => { e.stopPropagation(); navigate('/movie/' + film); }}
+            style={{ fontSize: 9.5, color: MISE.ink35, cursor: 'pointer' }}
+          >
+            영화 상세보기 →
           </div>
         </div>
 
-        {/* Arrow button */}
-        <div
-          onClick={() => navigate('/pot/' + film)}
-          style={{
-            width: 32, height: 32, background: MISE.charcoal, borderRadius: 8,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', flexShrink: 0, alignSelf: 'center',
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={MISE.warm} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </div>
+        {/* Simple chevron */}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={MISE.ink35} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ alignSelf: 'center', flexShrink: 0, marginTop: 4 }}>
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
       </div>
 
       {/* Screening dates */}

@@ -5,9 +5,9 @@ import StarRow from '../components/StarRow.jsx'
 import { MISE, FILMS } from '../tokens.js'
 
 const SCHEDULES = [
-  { id: 1, date: '5.18 (토)', time: '14:00', where: 'CGV 홍대 2관',   distance: '2.4km', filled: 22, total: 20 },
-  { id: 2, date: '5.24 (금)', time: '20:00', where: '씨네큐브 광화문', distance: '5.1km', filled: 8,  total: 15 },
-  { id: 3, date: '6.1 (일)',  time: '15:00', where: '아트나인 이수',   distance: '3.7km', filled: 3,  total: 18 },
+  { id: 1, date: '5.18 (토)', time: '14:00', where: 'CGV 홍대 2관',   distance: '2.4km', filled: 110, total: 20, theaterTotal: 120, theaterRemaining: 16 },
+  { id: 2, date: '5.24 (금)', time: '20:00', where: '씨네큐브 광화문', distance: '5.1km', filled: 8,   total: 15 },
+  { id: 3, date: '6.1 (일)',  time: '15:00', where: '아트나인 이수',   distance: '3.7km', filled: 3,   total: 18 },
 ];
 
 export default function ScreenPotDetail() {
@@ -66,7 +66,7 @@ export default function ScreenPotDetail() {
   );
 }
 
-function ScheduleCard({ date, time, where, distance, filled, total }) {
+function ScheduleCard({ date, time, where, distance, filled, total, theaterTotal, theaterRemaining }) {
   const pct = Math.round(filled / total * 100);
   const isOver = pct >= 100;
   const urgent = !isOver && total - filled <= 3;
@@ -93,9 +93,7 @@ function ScheduleCard({ date, time, where, distance, filled, total }) {
       <div style={{ marginBottom: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
           <span style={{ fontSize: 9.5, color: MISE.ink45, letterSpacing: '0.08em' }}>신청 현황</span>
-          <span style={{ fontSize: 12, color: barColor, fontWeight: 700 }}>
-            {isOver ? '초과 달성' : `${pct}%`}
-          </span>
+          <span style={{ fontSize: 12, color: barColor, fontWeight: 700 }}>{pct}%</span>
         </div>
         <div style={{ height: 5, background: MISE.ink10, borderRadius: 2.5, overflow: 'hidden', marginBottom: 5 }}>
           <div style={{ height: '100%', width: `${Math.min(pct, 100)}%`, background: barColor, borderRadius: 2.5 }} />
@@ -103,8 +101,8 @@ function ScheduleCard({ date, time, where, distance, filled, total }) {
         <div style={{ fontSize: 9.5, color: MISE.ink45 }}>
           {isOver ? (
             <>
-              <span style={{ color: '#2A7A50', fontWeight: 600 }}>잔여 0석</span>
-              {' '}· 전체 {total}명
+              <span style={{ color: '#2A7A50', fontWeight: 600 }}>잔여 {theaterRemaining ?? 0}석</span>
+              {' '}· 전체 {theaterTotal ?? total}명
             </>
           ) : (
             <>
